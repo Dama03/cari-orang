@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Romantic Bomb Effect</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #1a1a1a;
+      overflow: hidden;
+      flex-direction: column;
+    }
+    .message {
+      color: white;
+      font-size: 24px;
+      margin-bottom: 20px;
+      animation: fadeIn 3s ease-in;
+    }
+    .balloon {
+      width: 50px;
+      height: 70px;
+      background: radial-gradient(circle, #ff7eb3, #ff4d6d);
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: inflate 15s ease-in-out forwards;
+      cursor: pointer;
+    }
+    .string {
+      width: 2px;
+      height: 50px;
+      background: white;
+      position: absolute;
+      bottom: -50px;
+    }
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    @keyframes inflate {
+      0% { transform: scale(1) translate(-50%, -50%); }
+      50% { transform: scale(1.5) translate(-50%, -50%); }
+      100% { transform: scale(2.5) translate(-50%, -50%); }
+    }
+    .explosion {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    .image {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 50%;
+      animation: scatter 30s ease-out forwards;
+    }
+    @keyframes scatter {
+      0% {
+        transform: scale(2) translate(0, 0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1) translate(var(--x), var(--y)) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="message" id="message">Selamat datang, sayang sekali kamu bukan orang yang saya cari</div>
+  <div class="balloon" id="balloon">
+    <div class="string"></div>
+  </div>
+  <div class="explosion" id="explosion"></div>
+
+  <!-- Tambahkan elemen audio -->
+  <audio id="explosionSound" src="../galeri/balloon-pop-93436.mp3"></audio>
+
+  <script>
+    const message = document.getElementById('message');
+    const balloon = document.getElementById('balloon');
+    const explosion = document.getElementById('explosion');
+    const explosionSound = document.getElementById('explosionSound');
+
+    const images = [
+      '../galeri/dada.jpg',
+      '../galeri/dede.jpg',
+      '../galeri/didi.jpg',
+      '../galeri/dodo.jpg',
+      '../galeri/dudu.jpg'
+    ];
+
+    // Get username from localStorage
+    const username = localStorage.getItem('username') || 'Guest';
+    message.textContent = `Selamat datang, ${username} sayang sekali kamu bukan orang yang saya cari`;
+
+    // Hide the message after 8 seconds
+    setTimeout(() => {
+      message.style.display = 'none';
+    }, 8000);
+
+    // Show the balloon after 8 seconds
+    setTimeout(() => {
+      balloon.style.display = 'flex'; // Display the balloon
+    }, 8000);
+
+    // Inflate the balloon and make it pop after 30 seconds
+    setTimeout(() => {
+      balloon.style.display = 'none'; // Hide the balloon after it pops
+
+      // Putar suara ledakan
+      explosionSound.play();
+
+      for (let i = 0; i < images.length; i++) {
+        const img = document.createElement('div');
+        img.classList.add('image');
+        img.style.backgroundImage = `url(${images[i]})`;
+
+        // Generate random movement
+        const angle = Math.random() * 360;
+        const distance = Math.random() * 200 + 50; // Jarak lebih dekat
+        const x = Math.cos(angle) * distance;
+        const y = Math.sin(angle) * distance;
+
+        img.style.setProperty('--x', `${x}px`);
+        img.style.setProperty('--y', `${y}px`);
+
+        // Position images to start from the center of the balloon
+        img.style.left = '50%';
+        img.style.top = '50%';
+        img.style.transformOrigin = 'center';
+
+        explosion.appendChild(img);
+
+        setTimeout(() => {
+          img.remove();
+        }, 5000); // Perpanjang durasi gambar terlihat
+      }
+    }, 30000); // Delay before explosion happens
+  </script>
+</body>
+</html>

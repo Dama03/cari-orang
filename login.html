@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            background-image: url('galeri/becgrun.webp'); /* Background image for the entire body */
+            background-size: cover;  /* Make the background cover the entire page */
+            background-position: center;  /* Center the background image */
+        }
+
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+            color: #333; /* Set text color to dark for readability */
+        }
+
+        .login-container img {
+            width: 100px;  /* Adjust width as needed */
+            height: 100px; /* Adjust height as needed */
+            margin-bottom: 20px;
+        }
+
+        .login-container h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .login-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .login-container button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Animation for the moving image */
+        @keyframes moveImage {
+            0% {
+                right: -200px; /* Start from the right off-screen */
+            }
+            100% {
+                right: 100%; /* Move to the left off-screen */
+            }
+        }
+
+        .moving-image {
+            position: fixed;
+            bottom: 0;
+            right: -200px; /* Start position off the screen on the right */
+            width: 100px;  /* Set the width of the moving image */
+            height: 100px; /* Set the height of the moving image */
+            animation: moveImage 10s linear infinite; /* Animation duration and infinite loop */
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <img src="galeri/vespa.png" alt="Logo">
+    <h1>Login</h1>
+    <input type="text" id="username" placeholder="Enter your name">
+    <button onclick="checkLogin()">Login</button>
+</div>
+<!-- Moving Image at the bottom -->
+<img src="galeri/jalan.png" alt="Moving Image" class="moving-image"> <!-- Replace with your image path -->
+
+<!-- Audio element to play sound -->
+<audio id="moveSound" src="galeri/vespa-driving-68859.mp3" preload="auto"></audio> <!-- Replace with your sound file path -->
+
+<script>
+    // Play sound when the image moves
+    const moveSound = document.getElementById('moveSound');
+
+    // Function to start playing sound each time the animation restarts
+    document.querySelector('.moving-image').addEventListener('animationiteration', function() {
+        moveSound.play();  // Play sound on each animation loop
+    });
+
+    function checkLogin() {
+        const allowedUsers = ["pipi", "fani"];
+        const username = document.getElementById("username").value.trim().toLowerCase();
+
+        if (allowedUsers.includes(username)) {
+            // Save the username to localStorage
+            localStorage.setItem("username", username);
+            window.location.href = "./benar/benar.html";  // Redirect to benar.html
+        } else {
+            // Save the username to localStorage for showing in the error page
+            localStorage.setItem("username", username);
+            window.location.href = "./salah/salah.html";  // Redirect to salah.html
+        }
+    }
+</script>
+
+</body>
+</html>
